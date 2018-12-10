@@ -1,14 +1,20 @@
 var express = require('express')
 var path = require("path")
 var favicon = require('serve-favicon')
-const helmet = require('helmet')
 var app = express()
+const helmet = require('helmet')
+const sixtyDaysInSeconds = 5184000
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 app.use(favicon(path.join(__dirname + '/public/images/favicon.png')))
-// Sets "X-XSS-Protection: 1; mode=block" on all versions of IE
-app.use(helmet.xssFilter({ setOnOldIE: true }))
+// Http security headers
+app.disable('x-powered-by')
+app.use(helmet.xssFilter())	// Sets "X-XSS-Protection: 1; mode=block"
+app.use(helmet.hsts({ maxAge: sixtyDaysInSeconds }))	// Sets "Strict-Transport-Security" header
+app.use(helmet.nocache())	// Set header Cache-Control and Pragma to turn-off client-side caching
+app.use(helmet.noSniff())	// Sets "X-Content-Type-Options: nosniff"
+app.use(helmet.frameguard({ action: 'sameorigin' }))	// Sets "X-Frame-Options: SAMEORIGIN"
 
 app.get('/', function(request, response) {
   res.sendFile(path.join(__dirname + '/public/index.html'))
