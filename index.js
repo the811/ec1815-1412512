@@ -12,7 +12,7 @@ app.use(favicon(path.join(__dirname + '/public/images/favicon.png')))
 app.disable('x-powered-by')
 app.use(helmet.xssFilter())	// Sets "X-XSS-Protection: 1; mode=block"
 app.use(helmet.hsts({ maxAge: sixtyDaysInSeconds }))	// Sets "Strict-Transport-Security" header
-app.use(helmet.nocache())	// Set header Cache-Control and Pragma to turn-off client-side caching
+app.use(helmet.noCache())	// Set header Cache-Control and Pragma to turn-off client-side caching
 app.use(helmet.noSniff())	// Sets "X-Content-Type-Options: nosniff"
 app.use(helmet.frameguard({ action: 'sameorigin' }))	// Sets "X-Frame-Options: SAMEORIGIN"
 
